@@ -22,7 +22,7 @@ const API_ENDPOINT = 'http://localhost:5000/api/analyze';
 const analyzeWebsite = async (url: string, keywords: string[]): Promise<AnalysisResponse> => {
   try {
     // const response = await fetch(API_ENDPOINT, {
-    const response = await fetch(`${backendBaseURL}api/analyze`, {
+    const response = await fetch(`${backendBaseURL.replace(/\/$/, '')}/api/analyze`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -187,7 +187,8 @@ function App() {
             {analysisData.reportURL && (
               <div className="mt-6">
                 <a
-                  href={`http://localhost:5000${analysisData.reportURL}`}
+                  // href={`http://localhost:5000${analysisData.reportURL}`}
+                  href={`${backendBaseURL.replace(/\/$/, '')}${analysisData.reportURL}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   download
