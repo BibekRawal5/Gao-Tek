@@ -15,7 +15,12 @@ import mongoose from 'mongoose';
 import analyzeRoutes from './routes/analyzeRoutes.js';
 
 const app = express();
-app.use(cors());
+const cors = require('cors');
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 import path from 'path';
