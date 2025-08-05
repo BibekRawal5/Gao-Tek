@@ -15,7 +15,7 @@ import mongoose from 'mongoose';
 import analyzeRoutes from './routes/analyzeRoutes.js';
 
 const app = express();
-const cors = require('cors');
+
 app.use(cors({
   origin: '*', 
   methods: ['GET', 'POST'],
