@@ -177,29 +177,6 @@ export const analyze = async (req, res) => {
 
     await browser.close();
 
-    // --- RESPONSE ---
-    res.json({
-      url,
-      keywords,
-      analysis: {
-        metaTags: pageData.meta,
-        keywordDensity,
-        pageSpeed,
-        mobileFriendly: pageSpeed.mobileFriendly,
-        readabilityScore,
-        // Pull semanticClarity from the aiInsights object
-        semanticClarity: aiInsights.semanticClarity || "AI analysis failed.",
-        internalPages: internalPagesData,
-        internalPagesSuggestions,
-        homepageSuggestions,
-        structuredDataPresent: hasStructuredData,
-        sampleParagraph,
-        rewrittenParagraph,
-        // The rest of the AI insights
-        aiInsights,
-      },
-    });
-
     // Generate PDF report asynchronously (optional)
     const outputPath = `./reports/report_${Date.now()}.pdf`;
     generatePdfReport({ url, keywords, analysis: {
@@ -223,6 +200,33 @@ export const analyze = async (req, res) => {
     .catch(err => {
       console.error('Failed to generate PDF report:', err);
     });
+
+    const reportURL = outputPath;
+
+    // --- RESPONSE ---
+    res.json({
+      url,
+      keywords,
+      reportURL,
+      analysis: {
+        metaTags: pageData.meta,
+        keywordDensity,
+        pageSpeed,
+        mobileFriendly: pageSpeed.mobileFriendly,
+        readabilityScore,
+        // Pull semanticClarity from the aiInsights object
+        semanticClarity: aiInsights.semanticClarity || "AI analysis failed.",
+        internalPages: internalPagesData,
+        internalPagesSuggestions,
+        homepageSuggestions,
+        structuredDataPresent: hasStructuredData,
+        sampleParagraph,
+        rewrittenParagraph,
+        // The rest of the AI insights
+        aiInsights,
+      },
+    });
+
   } catch (error) {
     if (browser) await browser.close();
     console.error('Analysis error:', error.message);

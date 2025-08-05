@@ -18,6 +18,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// These 2 lines are needed because you're using ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve the 'reports' folder
+app.use('/reports', express.static(path.join(__dirname, 'reports')));
+
 const PORT = process.env.PORT || 5000;
 
 // Middleware
