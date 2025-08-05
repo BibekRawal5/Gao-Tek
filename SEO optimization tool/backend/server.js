@@ -28,7 +28,7 @@ const __dirname = path.dirname(__filename);
 // Serve the 'reports' folder
 app.use('/reports', express.static(path.join(__dirname, 'reports')));
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
