@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Smartphone, Monitor, BookOpen, Construction as Structure, CheckCircle, XCircle } from 'lucide-react';
+import {
+  Smartphone,
+  Monitor,
+  BookOpen,
+  Construction as Structure,
+  CheckCircle,
+  XCircle,
+  FileDown
+} from 'lucide-react';
+
 import AnalysisForm from './components/AnalysisForm';
 import MetricsCard from './components/MetricsCard';
 import KeywordDensity from './components/KeywordDensity';
@@ -8,7 +17,7 @@ import AIInsights from './components/AIInsights';
 import { AnalysisResponse } from './types/analysis';
 
 // Replace this URL with your actual API endpoint
-const API_ENDPOINT = 'http://localhost:5000/api/analyze'; // 👈 PUT YOUR API URL HERE
+const API_ENDPOINT = 'http://localhost:5000/api/analyze';
 
 const analyzeWebsite = async (url: string, keywords: string[]): Promise<AnalysisResponse> => {
   try {
@@ -16,9 +25,6 @@ const analyzeWebsite = async (url: string, keywords: string[]): Promise<Analysis
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add any additional headers your API requires (e.g., API keys)
-        // 'Authorization': 'Bearer your-api-key',
-        // 'X-API-Key': 'your-api-key',
       },
       body: JSON.stringify({
         url,
@@ -46,7 +52,7 @@ function App() {
   const handleAnalyze = async (url: string, keywords: string[]) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const data = await analyzeWebsite(url, keywords);
       setAnalysisData(data);
@@ -87,7 +93,7 @@ function App() {
                 icon={<Monitor size={20} />}
                 progress={analysisData.analysis.pageSpeed.score}
               />
-              
+
               <MetricsCard
                 title="Readability Score"
                 value={analysisData.analysis.readabilityScore.toFixed(1)}
@@ -96,7 +102,7 @@ function App() {
                 icon={<BookOpen size={20} />}
                 progress={analysisData.analysis.readabilityScore}
               />
-              
+
               <MetricsCard
                 title="Mobile Friendly"
                 value={analysisData.analysis.mobileFriendly ? "Yes" : "No"}
@@ -104,14 +110,14 @@ function App() {
                 color={analysisData.analysis.mobileFriendly ? 'green' : 'red'}
                 icon={<Smartphone size={20} />}
               />
-              
+
               <MetricsCard
                 title="Structured Data"
                 value={analysisData.analysis.structuredDataPresent ? "Present" : "Missing"}
                 subtitle="Schema Markup"
                 color={analysisData.analysis.structuredDataPresent ? 'green' : 'red'}
-                icon={analysisData.analysis.structuredDataPresent ? 
-                      <CheckCircle size={20} /> : <XCircle size={20} />}
+                icon={analysisData.analysis.structuredDataPresent ?
+                  <CheckCircle size={20} /> : <XCircle size={20} />}
               />
             </div>
 
@@ -121,7 +127,7 @@ function App() {
                 <Structure className="text-blue-500" size={24} />
                 <h2 className="text-xl font-bold text-gray-900">Meta Tags Analysis</h2>
               </div>
-              
+
               <div className="space-y-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Title Tag</h3>
@@ -132,7 +138,7 @@ function App() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2">Meta Description</h3>
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
@@ -171,10 +177,26 @@ function App() {
             )}
 
             {/* AI Insights */}
-            <AIInsights 
-              aiInsights={analysisData.analysis.aiInsights} 
+            <AIInsights
+              aiInsights={analysisData.analysis.aiInsights}
               rewrittenParagraph={analysisData.analysis.rewrittenParagraph}
             />
+
+            {/* Download PDF Report Button */}
+            {analysisData.reportURL && (
+              <div className="mt-6">
+                <a
+                  href={`http://localhost:5000${analysisData.reportURL}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+                >
+                  <FileDown size={18} />
+                  Download PDF Report
+                </a>
+              </div>
+            )}
           </div>
         )}
       </div>

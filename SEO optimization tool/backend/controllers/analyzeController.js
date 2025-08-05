@@ -178,7 +178,8 @@ export const analyze = async (req, res) => {
     await browser.close();
 
     // Generate PDF report asynchronously (optional)
-    const outputPath = `./reports/report_${Date.now()}.pdf`;
+    const reportFilename = `report_${Date.now()}.pdf`;
+    const outputPath = `./reports/${reportFilename}`;
     generatePdfReport({ url, keywords, analysis: {
       metaTags: pageData.meta,
       keywordDensity,
@@ -201,8 +202,7 @@ export const analyze = async (req, res) => {
       console.error('Failed to generate PDF report:', err);
     });
 
-    const reportURL = outputPath;
-
+    const reportURL = `/reports/${reportFilename}`;
     // --- RESPONSE ---
     res.json({
       url,

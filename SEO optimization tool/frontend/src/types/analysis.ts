@@ -49,6 +49,7 @@ export interface AIInsights {
 export interface AnalysisResponse {
   url: string;
   keywords: string[];
+  reportURL: string; 
   analysis: {
     metaTags: MetaTags;
     keywordDensity: Record<string, number>;
