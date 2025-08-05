@@ -16,12 +16,13 @@ import InternalPagesAnalysis from './components/InternalPagesAnalysis';
 import AIInsights from './components/AIInsights';
 import { AnalysisResponse } from './types/analysis';
 
-// Replace this URL with your actual API endpoint
+const backendBaseURL = import.meta.env.VITE_BACKEND_URL;
 const API_ENDPOINT = 'http://localhost:5000/api/analyze';
 
 const analyzeWebsite = async (url: string, keywords: string[]): Promise<AnalysisResponse> => {
   try {
-    const response = await fetch(API_ENDPOINT, {
+    // const response = await fetch(API_ENDPOINT, {
+    const response = await fetch(`${backendBaseURL}/analyze`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

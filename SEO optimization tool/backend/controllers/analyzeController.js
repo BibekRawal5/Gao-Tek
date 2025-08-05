@@ -177,7 +177,7 @@ export const analyze = async (req, res) => {
 
     await browser.close();
 
-    // Generate PDF report asynchronously (optional)
+    // Generate PDF report asynchronously
     const reportFilename = `report_${Date.now()}.pdf`;
     const outputPath = `./reports/${reportFilename}`;
     generatePdfReport({ url, keywords, analysis: {
