@@ -81,7 +81,11 @@ export const analyze = async (req, res) => {
     return res.status(400).json({ error: 'Missing or invalid url or keywords in request body' });
   }
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+  headless: true,
+  executablePath: puppeteer.executablePath(), // <-- explicitly specify Chromium
+  args: ['--no-sandbox', '--disable-setuid-sandbox'], // <-- required on Render
+});
   const page = await browser.newPage();
 
   // Helper to detect structured data markup (Schema.org)
