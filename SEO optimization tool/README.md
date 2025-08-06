@@ -18,5 +18,6 @@
 
 ## 🔗 Live Links
 
-- 🔍 Frontend: seo-tool.vercel.app
-- ⚙️ Backend API: seo-api.onrender.com
+- 🔍 Frontend: [seo-tool.vercel.app](https://gao-tek.vercel.app/)
+- ⚙️ Backend API: [seo-api.onrender.com](https://gao-tek.onrender.com)
+
