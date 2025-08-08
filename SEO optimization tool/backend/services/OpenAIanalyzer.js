@@ -1,12 +1,13 @@
-import { GoogleGenAI } from "@google/genai";
+import OpenAI from 'openai';
 
 // We DO NOT create the client here anymore.
 
 export async function generateAiInsights(webpageText) {
-  // Create the Gemini client INSIDE the function (after env vars are loaded)
-  const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
-
-  // const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  // THE FIX: Create the OpenAI client INSIDE the function.
+  // This guarantees it only runs AFTER the .env file is loaded.
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
   const prompt = `
 You are an expert SEO and Content Strategist. Your task is to analyze the provided webpage content and generate a structured JSON object with actionable insights.
@@ -49,27 +50,19 @@ The JSON object must follow this exact structure:
 ${webpageText.substring(0, 8000)}
 --- END OF CONTENT ---
 `;
-
   try {
-    const result = await genAI.models.generateContent({
-    model: "gemini-2.5-flash",
-    contentType: "application/json",
-    contents: prompt,
-  });
-    const text = result.text;
-    console.log("Gemini Response:", text);
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
+    });
 
-    // Attempt to parse JSON from Gemini output
-    const jsonStart = text.indexOf('{');
-    const jsonEnd = text.lastIndexOf('}');
-    const jsonString = text.substring(jsonStart, jsonEnd + 1);
-
-    return JSON.parse(jsonString);
+    return JSON.parse(response.choices[0].message.content);
   } catch (error) {
-    console.error('Gemini Error:', error);
+    console.error('Full OpenAI Error:', error);
     return {
       error: true,
-      message: 'Failed to get AI insights from Gemini.',
+      message: 'Failed to get AI insights.',
       details: error.message,
     };
   }

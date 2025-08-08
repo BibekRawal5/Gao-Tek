@@ -14,6 +14,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import analyzeRoutes from './routes/analyzeRoutes.js';
 
+
 const app = express();
 
 app.use(cors({
@@ -57,3 +58,4 @@ mongoose.connect(process.env.MONGODB_URI)
 .catch((error) => {
   console.error('MongoDB connection error:', error);
 });
+
